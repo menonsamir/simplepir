@@ -1,0 +1,17 @@
+{
+  "name": "workload-32GB",
+  "workloads": [
+    {
+      "db": {
+        "numItems": 137438953472,
+        "itemSizeBits": 1
+      }
+    },
+    {
+      "db": {
+        "numItems": 274877906944,
+        "itemSizeBits": 1
+      }
+    }
+  ]
+}

@@ -2,12 +2,13 @@ package pir
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"math"
 	"os"
 	"strconv"
-	"testing"
 	"strings"
+	"testing"
 )
 
 const LOGQ = uint64(32)
@@ -375,9 +376,29 @@ func TestDoublePirLongRowBatchCompressed(t *testing.T) {
         RunPIRCompressed(&pir, DB, p, []uint64{0, 0, 0, 0})
 }
 
+type Measurement struct {
+	Offline struct {
+		UploadBytes   float64 `json:"uploadBytes"`
+		DownloadBytes float64 `json:"downloadBytes"`
+		ServerTimeMs  float64 `json:"serverTimeMs"`
+		ClientTimeMs  float64 `json:"clientTimeMs"`
+	} `json:"offline"`
+	Online struct {
+		UploadBytes   float64 `json:"uploadBytes"`
+		DownloadBytes float64 `json:"downloadBytes"`
+		ServerTimeMs  float64 `json:"serverTimeMs"`
+		ClientTimeMs  float64 `json:"clientTimeMs"`
+	} `json:"online"`
+}
+
 // Benchmark SimplePIR performance.
 func BenchmarkSimplePirSingle(b *testing.B) {
 	f, err := os.Create("simple-cpu.out")
+	if err != nil {
+		panic("Error creating file")
+	}
+
+	fhJson, err := os.Create("report.json")
 	if err != nil {
 		panic("Error creating file")
 	}
@@ -404,10 +425,24 @@ func BenchmarkSimplePirSingle(b *testing.B) {
 
 	DB := MakeRandomDB(N, d, &p)
 	var tputs []float64
-	for j := 0; j < 5; j++ {
-		tput, _, _, _ := RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
-		tputs = append(tputs, tput)
-	}
+	_, _, offline_comm, online_comm, time_ms, online_upload := RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
+
+	// Write report.json
+	m := Measurement{}
+	m.Offline.UploadBytes = 0
+	m.Offline.DownloadBytes = offline_comm * 1024
+	m.Offline.ServerTimeMs = 0
+	m.Offline.ClientTimeMs = 0
+	m.Online.UploadBytes = online_upload * 1024
+	m.Online.DownloadBytes = online_comm * 1024
+	m.Online.ServerTimeMs = time_ms
+
+	// Write m to report.json
+	enc := json.NewEncoder(fhJson)
+	enc.Encode(m)
+	fhJson.Sync()
+	fhJson.Close()
+
 	fmt.Printf("Avg SimplePIR tput, except for first run: %f MB/s\n", avg(tputs))
 	fmt.Printf("Std dev of SimplePIR tput, except for first run: %f MB/s\n", stddev(tputs))
 }
@@ -415,6 +450,11 @@ func BenchmarkSimplePirSingle(b *testing.B) {
 // Benchmark DoublePIR performance.
 func BenchmarkDoublePirSingle(b *testing.B) {
 	f, err := os.Create("double-cpu.out")
+	if err != nil {
+		panic("Error creating file")
+	}
+
+	fhJson, err := os.Create("report.json")
 	if err != nil {
 		panic("Error creating file")
 	}
@@ -441,10 +481,24 @@ func BenchmarkDoublePirSingle(b *testing.B) {
 
 	DB := MakeRandomDB(N, d, &p)
 	var tputs []float64
-	for j := 0; j < 5; j++ {
-		tput, _, _, _ := RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
-		tputs = append(tputs, tput)
-	}
+	_, _, offline_comm, online_comm, time_ms, online_upload := RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
+
+	// Write report.json
+	m := Measurement{}
+	m.Offline.UploadBytes = 0
+	m.Offline.DownloadBytes = offline_comm * 1024
+	m.Offline.ServerTimeMs = 0
+	m.Offline.ClientTimeMs = 0
+	m.Online.UploadBytes = online_upload * 1024
+	m.Online.DownloadBytes = online_comm * 1024
+	m.Online.ServerTimeMs = time_ms
+
+	// Write m to report.json
+	enc := json.NewEncoder(fhJson)
+	enc.Encode(m)
+	fhJson.Sync()
+	fhJson.Close()
+	
 	fmt.Printf("Avg DoublePIR tput, except for first run: %f MB/s\n", avg(tputs))
 	fmt.Printf("Std dev of DoublePIR tput, except for first run: %f MB/s\n", stddev(tputs))
 }
@@ -483,7 +537,7 @@ func BenchmarkSimplePirVaryingDB(b *testing.B) {
 		var online_cs []float64
 
 		for j := 0; j < 5; j++ {
-			tput, _, offline_c, online_c := RunFakePIR(&pir, DB, p, []uint64{i}, nil, false)
+			tput, _, offline_c, online_c, _, _ := RunFakePIR(&pir, DB, p, []uint64{i}, nil, false)
 			tputs = append(tputs, tput)
 			offline_cs = append(offline_cs, offline_c)
 			online_cs = append(online_cs, online_c)
@@ -536,7 +590,7 @@ func BenchmarkDoublePirVaryingDB(b *testing.B) {
 		var online_cs []float64
 
 		for j := 0; j < 5; j++ {
-			tput, _, offline_c, online_c := RunFakePIR(&pir, DB, p, []uint64{i}, nil, false)
+			tput, _, offline_c, online_c, _, _ := RunFakePIR(&pir, DB, p, []uint64{i}, nil, false)
 			tputs = append(tputs, tput)
 			offline_cs = append(offline_cs, offline_c)
 			online_cs = append(online_cs, online_c)
@@ -605,7 +659,7 @@ func BenchmarkSimplePirBatchLarge(b *testing.B) {
 		}
 		var tputs []float64
 		for iter := 0; iter < 5; iter++ {
-			tput, _, _, _ := RunFakePIR(&pir, DB, p, query, f, false)
+			tput, _, _, _, _, _ := RunFakePIR(&pir, DB, p, query, f, false)
 			tputs = append(tputs, tput)
 		}
 
@@ -671,7 +725,7 @@ func BenchmarkDoublePirBatchLarge(b *testing.B) {
 		}
 		var tputs []float64
 		for iter := 0; iter < 5; iter++ {
-			tput, _, _, _ := RunFakePIR(&pir, DB, p, query, f, false)
+			tput, _, _, _, _, _ := RunFakePIR(&pir, DB, p, query, f, false)
 			tputs = append(tputs, tput)
 		}
 		expected_num_empty_buckets := math.Pow(float64(batch_sz-1)/float64(batch_sz), float64(batch_sz)) * float64(batch_sz)

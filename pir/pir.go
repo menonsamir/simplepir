@@ -38,8 +38,8 @@ type PIR interface {
 
 // Run PIR's online phase, with a random preprocessing (to skip the offline phase).
 // Gives accurate bandwidth and online time measurements.
-func RunFakePIR(pi PIR, DB *Database, p Params, i []uint64, 
-                f *os.File, profile bool) (float64, float64, float64, float64) {
+func RunFakePIR(pi PIR, DB *Database, p Params, i []uint64,
+	f *os.File, profile bool) (float64, float64, float64, float64, float64, float64) {
 	fmt.Printf("Executing %s\n", pi.Name())
 	//fmt.Printf("Memory limit: %d\n", debug.SetMemoryLimit(math.MaxInt64))
 	debug.SetGCPercent(-1)
@@ -68,6 +68,8 @@ func RunFakePIR(pi PIR, DB *Database, p Params, i []uint64,
 	bw += online_comm
 	runtime.GC()
 
+	online_upload := online_comm
+
 	fmt.Println("Answering query...")
 	if profile {
 		pprof.StartCPUProfile(f)
@@ -88,11 +90,13 @@ func RunFakePIR(pi PIR, DB *Database, p Params, i []uint64,
 	debug.SetGCPercent(100)
 	pi.Reset(DB, p)
 
-	if offline_comm + online_comm != bw {
+	if offline_comm+online_comm != bw {
 		panic("Should not happen!")
 	}
 
-	return rate, bw, offline_comm, online_comm
+	time_ms := float64(elapsed.Milliseconds())
+
+	return rate, bw, offline_comm, online_comm, time_ms, online_upload
 }
 
 // Run full PIR scheme (offline + online phases).
