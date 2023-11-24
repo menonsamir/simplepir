@@ -3,7 +3,12 @@ package pir
 // #cgo CFLAGS: -O3 -march=native
 // #include "pir.h"
 import "C"
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"time"
+)
 
 type SimplePIR struct{}
 
@@ -171,10 +176,68 @@ func (pi *SimplePIR) Answer(DB *Database, query MsgSlice, server State, shared S
 		if batch == int(num_queries-1) {
 			batch_sz = DB.Data.Rows - last
 		}
-		a := MatrixMulVecPacked(DB.Data.SelectRows(last, batch_sz),
-			q.Data[0],
-			DB.Info.Basis,
-			DB.Info.Squishing)
+		// a := MatrixMulVecPacked(DB.Data.SelectRows(last, batch_sz),
+		// 	q.Data[0],
+		// 	DB.Info.Basis,
+		// 	DB.Info.Squishing)
+
+		a := new(Matrix)
+		q1 := q.Data[0]
+		_, doKTest := os.LookupEnv("DO_K_TEST")
+
+		if doKTest {
+			kStr := os.Getenv("K_CCB")
+			K, _ := strconv.Atoi(kStr)
+			// parse int from K
+			if K == 2 {
+				q1_wider := q1.RowsDeepCopy(0, q1.Rows)
+				q1_wider.ConcatHorizontal(q1)
+				// fmt.Printf("q1: %d x %d\n", q1.Rows, q1.Cols)
+				// fmt.Printf("q1_wider: %d x %d\n", q1_wider.Rows, q1_wider.Cols)
+				fmt.Println("Batched mul (k=2)...")
+				start := time.Now()
+				a = MatrixMulVecPacked2(DB.Data.SelectRows(last, batch_sz),
+					q1_wider, DB.Info.Basis, DB.Info.Squishing)
+				a.Cols = 1
+				a.Data = a.Data[:a.Rows]
+				printTime(start)
+			} else if K == 4 {
+				q1_wider := q1.RowsDeepCopy(0, q1.Rows)
+				q1_wider.ConcatHorizontal(q1)
+				q1_even_wider := q1_wider.RowsDeepCopy(0, q1_wider.Rows)
+				q1_even_wider.ConcatHorizontal(q1_wider)
+
+				fmt.Println("Batched mul (k=4)...")
+				start := time.Now()
+				a = MatrixMulVecPacked4(DB.Data.SelectRows(last, batch_sz),
+					q1_even_wider, DB.Info.Basis, DB.Info.Squishing)
+				a.Cols = 1
+				a.Data = a.Data[:a.Rows]
+				printTime(start)
+			} else if K == 8 {
+				q1_wider := q1.RowsDeepCopy(0, q1.Rows)
+				q1_wider.ConcatHorizontal(q1)
+				q1_even_wider := q1_wider.RowsDeepCopy(0, q1_wider.Rows)
+				q1_even_wider.ConcatHorizontal(q1_wider)
+				q1_even_even_wider := q1_even_wider.RowsDeepCopy(0, q1_even_wider.Rows)
+				q1_even_even_wider.ConcatHorizontal(q1_even_wider)
+
+				fmt.Println("Batched mul (k=8)...")
+				start := time.Now()
+				a = MatrixMulVecPacked8(DB.Data.SelectRows(last, batch_sz),
+					q1_even_even_wider, DB.Info.Basis, DB.Info.Squishing)
+				a.Cols = 1
+				a.Data = a.Data[:a.Rows]
+				printTime(start)
+			} else {
+				panic("Not implemented")
+			}
+		} else {
+			a = MatrixMulVecPacked(DB.Data.SelectRows(last, batch_sz),
+				q1, DB.Info.Basis, DB.Info.Squishing)
+		}
+
+
 		ans.Concat(a)
 		last += batch_sz
 	}

@@ -28,7 +28,7 @@
         "offline": {
           "uploadBytes": 0,
           "downloadBytes": 126537728,
-          "serverTimeMs": 0,
+          "serverTimeMs": 274310,
           "clientTimeMs": 0
         },
         "online": {
@@ -94,7 +94,7 @@
         "offline": {
           "uploadBytes": 0,
           "downloadBytes": 379621376,
-          "serverTimeMs": 0,
+          "serverTimeMs": 2678105,
           "clientTimeMs": 0
         },
         "online": {

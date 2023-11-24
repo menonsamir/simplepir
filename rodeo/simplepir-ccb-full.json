@@ -1,7 +1,7 @@
 {
   "scheme": {
     "family": "simplepir-doublepir",
-    "variant": "doublepir",
+    "variant": "simplepir",
     "authors": "Alexandra Henzinger, Matthew M. Hong, Henry Corrigan-Gibbs, Sarah Meiklejohn, and Vinod Vaikuntanathan",
     "repo": "https://github.com/ahenzinger/simplepir"
   },
@@ -20,43 +20,24 @@
     {
       "scenario": {
         "db": {
-          "numItems": 8589934592,
+          "numItems": 137438953472,
           "itemSizeBits": 1
-        }
-      },
-      "measurement": {
-        "offline": {
-          "uploadBytes": 0,
-          "downloadBytes": 16777216,
-          "serverTimeMs": 301684,
-          "clientTimeMs": 0
         },
-        "online": {
-          "uploadBytes": 319488,
-          "downloadBytes": 352256,
-          "serverTimeMs": 88,
-          "clientTimeMs": 0
-        }
-      }
-    },
-    {
-      "scenario": {
-        "db": {
-          "numItems": 17179869184,
-          "itemSizeBits": 1
+        "clients": {
+          "numClients": 1
         }
       },
       "measurement": {
         "offline": {
           "uploadBytes": 0,
-          "downloadBytes": 16777216,
+          "downloadBytes": 536870912,
           "serverTimeMs": 0,
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 377856,
-          "downloadBytes": 410624,
-          "serverTimeMs": 181,
+          "uploadBytes": 524288,
+          "downloadBytes": 1048576,
+          "serverTimeMs": 1678,
           "clientTimeMs": 0
         }
       }
@@ -64,21 +45,24 @@
     {
       "scenario": {
         "db": {
-          "numItems": 34359738368,
+          "numItems": 137438953472,
           "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 2
         }
       },
       "measurement": {
         "offline": {
           "uploadBytes": 0,
-          "downloadBytes": 16777216,
+          "downloadBytes": 536870912,
           "serverTimeMs": 0,
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 494592,
-          "downloadBytes": 527360,
-          "serverTimeMs": 390,
+          "uploadBytes": 524288,
+          "downloadBytes": 1048576,
+          "serverTimeMs": 2164,
           "clientTimeMs": 0
         }
       }
@@ -86,21 +70,49 @@
     {
       "scenario": {
         "db": {
-          "numItems": 68719476736,
+          "numItems": 137438953472,
           "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 4
         }
       },
       "measurement": {
         "offline": {
           "uploadBytes": 0,
-          "downloadBytes": 16777216,
-          "serverTimeMs": 2832868,
+          "downloadBytes": 536870912,
+          "serverTimeMs": 0,
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 741376,
-          "downloadBytes": 774144,
-          "serverTimeMs": 812,
+          "uploadBytes": 524288,
+          "downloadBytes": 1048576,
+          "serverTimeMs": 3828,
+          "clientTimeMs": 0
+        }
+      }
+    },
+    {
+      "scenario": {
+        "db": {
+          "numItems": 137438953472,
+          "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 8
+        }
+      },
+      "measurement": {
+        "offline": {
+          "uploadBytes": 0,
+          "downloadBytes": 536870912,
+          "serverTimeMs": 0,
+          "clientTimeMs": 0
+        },
+        "online": {
+          "uploadBytes": 524288,
+          "downloadBytes": 1048576,
+          "serverTimeMs": 6951,
           "clientTimeMs": 0
         }
       }

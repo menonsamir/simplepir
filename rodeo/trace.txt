@@ -1,0 +1,123 @@
+ubuntu@ip-172-31-4-28:~/sublinear/simplepir/pir$ LOG_N=37 D=1 go test -timeout 99999s -run ^TestSimplePir$ && LOG_N=37 D=1 go test -timeout 99999s -run ^TestDoublePir$
+Working with: n=1024; db size=2^34 (l=131072, m=131072); logq=32; p=495; sigma=6.400000
+Total packed DB size is ~18332.231096 MB
+Executing SimplePIR
+Setup...
+        Elapsed: 1h24m5.432470663s
+                Offline download: 524288.000000 KB
+Building query...
+        Elapsed: 240.010003ms
+                Online upload: 512.000000 KB
+Answering query...
+        Elapsed: 1.744082801s
+        Rate: 10511.101357 MB/s
+                Online download: 512.000000 KB
+Reconstructing...
+Success!
+        Elapsed: 39.344704ms
+PASS
+ok      github.com/ahenzinger/simplepir/pir     7066.865s
+
+---
+
+ubuntu@ip-172-31-4-28:~/sublinear/simplepir/pir$ LOG_N=37 D=1 go test -timeout 99999s -run ^TestSimplePir$ && LOG_N=37 D=1 go test -timeout 99999s -run ^TestDoublePir$
+Working with: n=1024; db size=2^34 (l=131072, m=131072); logq=32; p=495; sigma=6.400000
+Total packed DB size is ~18332.231096 MB
+Executing SimplePIR
+Setup...
+        Elapsed: 1h24m5.432470663s
+                Offline download: 524288.000000 KB
+Building query...
+        Elapsed: 240.010003ms
+                Online upload: 512.000000 KB
+Answering query...
+        Elapsed: 1.744082801s
+        Rate: 10511.101357 MB/s
+                Online download: 512.000000 KB
+Reconstructing...
+Success!
+        Elapsed: 39.344704ms
+PASS
+ok      github.com/ahenzinger/simplepir/pir     7066.865s
+Working with: n=1024; db size=2^34 (l=131072, m=131072); logq=32; p=464; sigma=6.400000
+Total packed DB size is ~18141.145078 MB
+Executing DoublePIR
+Setup...
+        Elapsed: 1h25m17.377863845s
+                Offline download: 16384.000000 KB
+Building query...
+        Elapsed: 415.646914ms
+                Online upload: 1024.000000 KB
+Answering query...
+4-by-43691 vs. 131073-by-1024
+        Elapsed: 1.787516291s
+        Rate: 10148.799857 MB/s
+                Online download: 32.000000 KB
+Reconstructing...
+Success!
+        Elapsed: 1.360607342s
+PASS
+ok      github.com/ahenzinger/simplepir/pir     7205.560s
+
+---
+
+ubuntu@ip-172-31-4-28:~/sublinear/simplepir/pir$ LOG_N=36 D=1 go test -timeout 99999s -run ^TestDoublePir$        Working with: n=1024; db size=2^33 (l=92681, m=92683); logq=32; p=464; sigma=6.400000
+Total packed DB size is ~9070.592107 MB
+Executing DoublePIR
+Setup...
+        Elapsed: 47m12.867997039s
+                Offline download: 16384.000000 KB
+Building query...
+        Elapsed: 275.495756ms
+                Online upload: 724.000000 KB
+Answering query...
+4-by-30894 vs. 92682-by-1024
+        Elapsed: 788.744876ms
+        Rate: 11500.033005 MB/s
+                Online download: 32.000000 KB
+Reconstructing...
+Success!
+        Elapsed: 935.643511ms
+PASS
+ok      github.com/ahenzinger/simplepir/pir     3883.298s
+
+---
+
+ubuntu@ip-172-31-4-28:~/sublinear/simplepir/pir$ LOG_N=38 D=1 go test -timeout 99999s -run ^TestSimplePir$ && LOG_N=38 D=1 go test -timeout 99999s -run ^TestDoublePir$
+Working with: n=1024; db size=2^35 (l=185363, m=185365); logq=32; p=416; sigma=6.400000
+Total packed DB size is ~35637.077968 MB
+Executing SimplePIR
+Setup...
+        Elapsed: 2h45m42.251896126s
+                Offline download: 741452.000000 KB
+Building query...
+        Elapsed: 323.689518ms
+                Online upload: 724.000000 KB
+Answering query...
+        Elapsed: 3.067126232s
+        Rate: 11619.045084 MB/s
+                Online download: 724.000000 KB
+Reconstructing...
+Success!
+        Elapsed: 55.518134ms
+PASS
+ok      github.com/ahenzinger/simplepir/pir     14214.762s
+Working with: n=1024; db size=2^35 (l=185363, m=185365); logq=32; p=390; sigma=6.400000
+Total packed DB size is ~35255.701025 MB
+Executing DoublePIR
+Setup...
+        Elapsed: 2h47m59.052869564s
+                Offline download: 16384.000000 KB
+Building query...
+        Elapsed: 546.355404ms
+                Online upload: 1448.000000 KB
+Answering query...
+4-by-61788 vs. 185364-by-1024
+        Elapsed: 3.453278351s
+        Rate: 10209.342382 MB/s
+                Online download: 32.000000 KB
+Reconstructing...
+Success!
+        Elapsed: 1.970164244s
+PASS
+ok      github.com/ahenzinger/simplepir/pir     14485.262s

@@ -160,13 +160,17 @@ func TestDoublePirBW(t *testing.T) {
 
 // Test SimplePIR correctness on DB with short entries.
 func TestSimplePir(t *testing.T) {
-	N := uint64(1 << 20)
-	d := uint64(8)
+	logN, err := strconv.Atoi(os.Getenv("LOG_N"))
+	if err != nil {
+		logN = 36
+	}
+	N := uint64(1 << logN)
+	d := uint64(1)
 	pir := SimplePIR{}
 	p := pir.PickParams(N, d, SEC_PARAM, LOGQ)
 
 	DB := MakeRandomDB(N, d, &p)
-	RunPIR(&pir, DB, p, []uint64{262144})
+	RunPIR(&pir, DB, p, []uint64{0})
 }
 
 func TestSimplePirCompressed(t *testing.T) {
@@ -265,8 +269,12 @@ func TestSimplePirLongRowBatchCompressed(t *testing.T) {
 
 // Test DoublePIR correctness on DB with short entries.
 func TestDoublePir(t *testing.T) {
-	N := uint64(1 << 28)
-	d := uint64(3)
+	logN, err := strconv.Atoi(os.Getenv("LOG_N"))
+	if err != nil {
+		logN = 36
+	}
+	N := uint64(1 << logN)
+	d := uint64(1)
 	pir := DoublePIR{}
 	p := pir.PickParams(N, d, SEC_PARAM, LOGQ)
 

@@ -20,30 +20,11 @@
     {
       "scenario": {
         "db": {
-          "numItems": 8589934592,
+          "numItems": 137438953472,
           "itemSizeBits": 1
-        }
-      },
-      "measurement": {
-        "offline": {
-          "uploadBytes": 0,
-          "downloadBytes": 16777216,
-          "serverTimeMs": 301684,
-          "clientTimeMs": 0
         },
-        "online": {
-          "uploadBytes": 319488,
-          "downloadBytes": 352256,
-          "serverTimeMs": 88,
-          "clientTimeMs": 0
-        }
-      }
-    },
-    {
-      "scenario": {
-        "db": {
-          "numItems": 17179869184,
-          "itemSizeBits": 1
+        "clients": {
+          "numClients": 1
         }
       },
       "measurement": {
@@ -54,9 +35,9 @@
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 377856,
-          "downloadBytes": 410624,
-          "serverTimeMs": 181,
+          "uploadBytes": 1048576,
+          "downloadBytes": 1081344,
+          "serverTimeMs": 1786,
           "clientTimeMs": 0
         }
       }
@@ -64,8 +45,11 @@
     {
       "scenario": {
         "db": {
-          "numItems": 34359738368,
+          "numItems": 137438953472,
           "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 2
         }
       },
       "measurement": {
@@ -76,9 +60,9 @@
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 494592,
-          "downloadBytes": 527360,
-          "serverTimeMs": 390,
+          "uploadBytes": 1048576,
+          "downloadBytes": 1081344,
+          "serverTimeMs": 2365,
           "clientTimeMs": 0
         }
       }
@@ -86,21 +70,49 @@
     {
       "scenario": {
         "db": {
-          "numItems": 68719476736,
+          "numItems": 137438953472,
           "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 4
         }
       },
       "measurement": {
         "offline": {
           "uploadBytes": 0,
           "downloadBytes": 16777216,
-          "serverTimeMs": 2832868,
+          "serverTimeMs": 0,
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 741376,
-          "downloadBytes": 774144,
-          "serverTimeMs": 812,
+          "uploadBytes": 1048576,
+          "downloadBytes": 1081344,
+          "serverTimeMs": 4010,
+          "clientTimeMs": 0
+        }
+      }
+    },
+    {
+      "scenario": {
+        "db": {
+          "numItems": 137438953472,
+          "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 8
+        }
+      },
+      "measurement": {
+        "offline": {
+          "uploadBytes": 0,
+          "downloadBytes": 16777216,
+          "serverTimeMs": 0,
+          "clientTimeMs": 0
+        },
+        "online": {
+          "uploadBytes": 1048576,
+          "downloadBytes": 1081344,
+          "serverTimeMs": 7083,
           "clientTimeMs": 0
         }
       }

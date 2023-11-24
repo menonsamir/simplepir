@@ -3,8 +3,10 @@ package pir
 // #cgo CFLAGS: -O3 -march=native
 // #include "pir.h"
 import "C"
-import "fmt"
-import "math/big"
+import (
+	"fmt"
+	"math/big"
+)
 
 type Matrix struct {
 	Rows uint64
@@ -221,6 +223,89 @@ func MatrixMulVecPacked(a *Matrix, b *Matrix, basis, compression uint64) *Matrix
 	return out
 }
 
+func MatrixMulVecPacked2(a *Matrix, b *Matrix, basis, compression uint64) *Matrix {
+	if a.Cols*compression != b.Rows {
+		fmt.Printf("%d-by-%d vs. %d-by-%d\n", a.Rows, a.Cols, b.Rows, b.Cols)
+		panic("Dimension mismatch")
+	}
+	if b.Cols != 2 {
+		panic("Second argument is not a matrix with two columns")
+	}
+	if compression != 3 && basis != 10 {
+		panic("Must use hard-coded values!")
+	}
+
+	out := MatrixNew(a.Rows+8, 2)
+
+	outPtr := (*C.Elem)(&out.Data[0])
+	aPtr := (*C.Elem)(&a.Data[0])
+	bPtr := (*C.Elem)(&b.Data[0])
+	b2Ptr := (*C.Elem)(&b.Data[b.Rows])
+
+	C.matMulVecPacked2(outPtr, aPtr, bPtr, b2Ptr, C.size_t(a.Rows), C.size_t(a.Cols))
+	out.DropLastRows(8)
+
+	return out
+}
+
+func MatrixMulVecPacked4(a *Matrix, b *Matrix, basis, compression uint64) *Matrix {
+	if a.Cols*compression != b.Rows {
+		fmt.Printf("%d-by-%d vs. %d-by-%d\n", a.Rows, a.Cols, b.Rows, b.Cols)
+		panic("Dimension mismatch")
+	}
+	if b.Cols != 4 {
+		panic("Second argument is not a matrix with four columns")
+	}
+	if compression != 3 && basis != 10 {
+		panic("Must use hard-coded values!")
+	}
+
+	out := MatrixNew(a.Rows+8, 2)
+
+	outPtr := (*C.Elem)(&out.Data[0])
+	aPtr := (*C.Elem)(&a.Data[0])
+	bPtr := (*C.Elem)(&b.Data[0])
+	b2Ptr := (*C.Elem)(&b.Data[b.Rows])
+	b3Ptr := (*C.Elem)(&b.Data[2*b.Rows])
+	b4Ptr := (*C.Elem)(&b.Data[3*b.Rows])
+
+	C.matMulVecPacked4(outPtr, aPtr, bPtr, b2Ptr, b3Ptr, b4Ptr, C.size_t(a.Rows), C.size_t(a.Cols))
+	out.DropLastRows(8)
+
+	return out
+}
+
+func MatrixMulVecPacked8(a *Matrix, b *Matrix, basis, compression uint64) *Matrix {
+	if a.Cols*compression != b.Rows {
+		fmt.Printf("%d-by-%d vs. %d-by-%d\n", a.Rows, a.Cols, b.Rows, b.Cols)
+		panic("Dimension mismatch")
+	}
+	if b.Cols != 8 {
+		panic("Second argument is not a matrix with eight columns")
+	}
+	if compression != 3 && basis != 10 {
+		panic("Must use hard-coded values!")
+	}
+
+	out := MatrixNew(a.Rows+8, 2)
+
+	outPtr := (*C.Elem)(&out.Data[0])
+	aPtr := (*C.Elem)(&a.Data[0])
+	bPtr := (*C.Elem)(&b.Data[0])
+	b2Ptr := (*C.Elem)(&b.Data[b.Rows])
+	b3Ptr := (*C.Elem)(&b.Data[2*b.Rows])
+	b4Ptr := (*C.Elem)(&b.Data[3*b.Rows])
+	b5Ptr := (*C.Elem)(&b.Data[4*b.Rows])
+	b6Ptr := (*C.Elem)(&b.Data[5*b.Rows])
+	b7Ptr := (*C.Elem)(&b.Data[6*b.Rows])
+	b8Ptr := (*C.Elem)(&b.Data[7*b.Rows])
+
+	C.matMulVecPacked8(outPtr, aPtr, bPtr, b2Ptr, b3Ptr, b4Ptr, b5Ptr, b6Ptr, b7Ptr, b8Ptr, C.size_t(a.Rows), C.size_t(a.Cols))
+	out.DropLastRows(8)
+
+	return out
+}
+
 func (m *Matrix) Transpose() {
 	if m.Cols == 1 {
 		m.Cols = m.Rows
@@ -263,6 +348,37 @@ func (a *Matrix) Concat(b *Matrix) {
 	a.Rows += b.Rows
 	a.Data = append(a.Data, b.Data...)
 }
+
+func (a *Matrix) ConcatHorizontal(b *Matrix) {
+	if a.Cols == 0 && a.Rows == 0 {
+		a.Cols = b.Cols
+		a.Rows = b.Rows
+		a.Data = b.Data
+		return
+	}
+
+	if a.Rows != b.Rows {
+		// Check for dimension mismatch
+		fmt.Printf("%d-by-%d vs. %d-by-%d\n", a.Rows, a.Cols, b.Rows, b.Cols)
+		panic("Dimension mismatch")
+	}
+
+	newData := make([]C.Elem, 0, a.Rows*a.Cols+b.Rows*b.Cols)
+
+	for i := uint64(0); i < a.Rows; i++ {
+		startA := i * a.Cols
+		endA := startA + a.Cols
+		newData = append(newData, a.Data[startA:endA]...)
+
+		startB := i * b.Cols
+		endB := startB + b.Cols
+		newData = append(newData, b.Data[startB:endB]...)
+	}
+
+	a.Cols += b.Cols
+	a.Data = newData
+}
+
 
 // Represent each element in the database with 'delta' elements in Z_'mod'.
 // Then, map the database elements from [0, mod] to [-mod/2, mod/2].

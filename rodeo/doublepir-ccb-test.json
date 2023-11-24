@@ -1,7 +1,7 @@
 {
   "scheme": {
     "family": "simplepir-doublepir",
-    "variant": "simplepir",
+    "variant": "doublepir",
     "authors": "Alexandra Henzinger, Matthew M. Hong, Henry Corrigan-Gibbs, Sarah Meiklejohn, and Vinod Vaikuntanathan",
     "repo": "https://github.com/ahenzinger/simplepir"
   },
@@ -20,43 +20,24 @@
     {
       "scenario": {
         "db": {
-          "numItems": 137438953472,
+          "numItems": 8589934592,
           "itemSizeBits": 1
+        },
+        "clients": {
+          "numClients": 4
         }
       },
       "measurement": {
         "offline": {
           "uploadBytes": 0,
-          "downloadBytes": 536870912,
-          "serverTimeMs": 5045432,
+          "downloadBytes": 16777216,
+          "serverTimeMs": 0,
           "clientTimeMs": 0
         },
         "online": {
-          "uploadBytes": 524288,
-          "downloadBytes": 1048576,
-          "serverTimeMs": 1643,
-          "clientTimeMs": 0
-        }
-      }
-    },
-    {
-      "scenario": {
-        "db": {
-          "numItems": 274877906944,
-          "itemSizeBits": 1
-        }
-      },
-      "measurement": {
-        "offline": {
-          "uploadBytes": 0,
-          "downloadBytes": 759246848,
-          "serverTimeMs": 9942252,
-          "clientTimeMs": 0
-        },
-        "online": {
-          "uploadBytes": 741376,
-          "downloadBytes": 1482752,
-          "serverTimeMs": 2986,
+          "uploadBytes": 319488,
+          "downloadBytes": 352256,
+          "serverTimeMs": 222,
           "clientTimeMs": 0
         }
       }

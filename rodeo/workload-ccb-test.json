@@ -1,0 +1,14 @@
+{
+  "name": "workload",
+  "workloads": [
+    {
+      "db": {
+        "numItems": 8589934592,
+        "itemSizeBits": 1
+      },
+      "clients": {
+        "numClients": 8
+      }
+    }
+  ]
+}
