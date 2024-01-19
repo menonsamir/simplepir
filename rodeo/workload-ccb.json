@@ -3,7 +3,7 @@
   "workloads": [
     {
       "db": {
-        "numItems": 137438953472,
+        "numItems": 274877906944,
         "itemSizeBits": 1
       },
       "clients": {
@@ -12,7 +12,7 @@
     },
     {
       "db": {
-        "numItems": 137438953472,
+        "numItems": 274877906944,
         "itemSizeBits": 1
       },
       "clients": {
@@ -21,7 +21,7 @@
     },
     {
       "db": {
-        "numItems": 137438953472,
+        "numItems": 274877906944,
         "itemSizeBits": 1
       },
       "clients": {
@@ -30,7 +30,7 @@
     },
     {
       "db": {
-        "numItems": 137438953472,
+        "numItems": 274877906944,
         "itemSizeBits": 1
       },
       "clients": {
