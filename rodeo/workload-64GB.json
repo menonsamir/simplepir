@@ -1,0 +1,11 @@
+{
+  "name": "workload-64GB",
+  "workloads": [
+    {
+      "db": {
+        "numItems": 467292441805,
+        "itemSizeBits": 1
+      }
+    }
+  ]
+}
