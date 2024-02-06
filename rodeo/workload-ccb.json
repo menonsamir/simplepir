@@ -7,15 +7,6 @@
         "itemSizeBits": 1
       },
       "clients": {
-        "numClients": 1
-      }
-    },
-    {
-      "db": {
-        "numItems": 274877906944,
-        "itemSizeBits": 1
-      },
-      "clients": {
         "numClients": 2
       }
     },

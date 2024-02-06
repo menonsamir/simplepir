@@ -58,7 +58,7 @@ func RunFakePIR(pi PIR, DB *Database, p Params, i []uint64,
 	fmt.Println("Building query...")
 	start := time.Now()
 	var query MsgSlice
-	for index, _ := range i {
+	for index := range i {
 		_, q := pi.Query(i[index], shared_state, p, DB.Info)
 		query.Data = append(query.Data, q)
 	}
@@ -94,7 +94,7 @@ func RunFakePIR(pi PIR, DB *Database, p Params, i []uint64,
 		panic("Should not happen!")
 	}
 
-	time_ms := float64(elapsed.Milliseconds())
+	time_ms := float64(elapsed.Microseconds()) / 1000.0
 
 	return rate, bw, offline_comm, online_comm, time_ms, online_upload
 }
@@ -127,7 +127,7 @@ func RunPIR(pi PIR, DB *Database, p Params, i []uint64) (float64, float64) {
 	start = time.Now()
 	var client_state []State
 	var query MsgSlice
-	for index, _ := range i {
+	for index := range i {
 		index_to_query := i[index] + uint64(index)*batch_sz
 		cs, q := pi.Query(index_to_query, shared_state, p, DB.Info)
 		client_state = append(client_state, cs)
@@ -154,7 +154,7 @@ func RunPIR(pi PIR, DB *Database, p Params, i []uint64) (float64, float64) {
 	fmt.Println("Reconstructing...")
 	start = time.Now()
 
-	for index, _ := range i {
+	for index := range i {
 		index_to_query := i[index] + uint64(index)*batch_sz
 		val := pi.Recover(index_to_query, uint64(index), offline_download, 
 		                  query.Data[index], answer, shared_state,
@@ -203,7 +203,7 @@ func RunPIRCompressed(pi PIR, DB *Database, p Params, i []uint64) (float64, floa
         start = time.Now()
         var client_state []State
         var query MsgSlice
-        for index, _ := range i {
+        for index := range i {
                 index_to_query := i[index] + uint64(index)*batch_sz
                 cs, q := pi.Query(index_to_query, client_shared_state, p, DB.Info)
                 client_state = append(client_state, cs)
@@ -230,7 +230,7 @@ func RunPIRCompressed(pi PIR, DB *Database, p Params, i []uint64) (float64, floa
         fmt.Println("Reconstructing...")
         start = time.Now()
 
-        for index, _ := range i {
+        for index := range i {
                 index_to_query := i[index] + uint64(index)*batch_sz
                 val := pi.Recover(index_to_query, uint64(index), offline_download,
                                   query.Data[index], answer, client_shared_state,

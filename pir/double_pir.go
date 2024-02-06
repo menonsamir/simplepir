@@ -252,6 +252,8 @@ func (pi *DoublePIR) Answer(DB *Database, query MsgSlice, server State, shared S
 				start := time.Now()
 				a = MatrixMulVecPacked8(DB.Data.SelectRows(last, batch_sz),
 					q1_even_even_wider, DB.Info.Basis, DB.Info.Squishing)
+				fmt.Printf("a[_] = %d\n", a.Data[len(a.Data) / 2])
+				
 				a.Cols = 1
 				a.Data = a.Data[:a.Rows]
 				printTime(start)

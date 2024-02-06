@@ -260,7 +260,7 @@ func MatrixMulVecPacked4(a *Matrix, b *Matrix, basis, compression uint64) *Matri
 		panic("Must use hard-coded values!")
 	}
 
-	out := MatrixNew(a.Rows+8, 2)
+	out := MatrixNew(a.Rows+8, 4)
 
 	outPtr := (*C.Elem)(&out.Data[0])
 	aPtr := (*C.Elem)(&a.Data[0])
@@ -287,7 +287,7 @@ func MatrixMulVecPacked8(a *Matrix, b *Matrix, basis, compression uint64) *Matri
 		panic("Must use hard-coded values!")
 	}
 
-	out := MatrixNew(a.Rows+8, 2)
+	out := MatrixNew(a.Rows+8, 8)
 
 	outPtr := (*C.Elem)(&out.Data[0])
 	aPtr := (*C.Elem)(&a.Data[0])
@@ -299,6 +299,8 @@ func MatrixMulVecPacked8(a *Matrix, b *Matrix, basis, compression uint64) *Matri
 	b6Ptr := (*C.Elem)(&b.Data[5*b.Rows])
 	b7Ptr := (*C.Elem)(&b.Data[6*b.Rows])
 	b8Ptr := (*C.Elem)(&b.Data[7*b.Rows])
+
+	fmt.Printf("MATMULVECPACKED8, a: %d x %d\n", a.Rows, a.Cols)
 
 	C.matMulVecPacked8(outPtr, aPtr, bPtr, b2Ptr, b3Ptr, b4Ptr, b5Ptr, b6Ptr, b7Ptr, b8Ptr, C.size_t(a.Rows), C.size_t(a.Cols))
 	out.DropLastRows(8)

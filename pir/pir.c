@@ -743,14 +743,14 @@ void matMulVecPacked8(Elem *out, const Elem *a, const Elem *b, const Elem *b2, c
       t_tmp6 += val6*b7[index2];
       t_tmp7 += val7*b7[index2];
       t_tmp8 += val8*b7[index2];
-      u_tmp  += val*b7[index2];
-      u_tmp2 += val2*b7[index2];
-      u_tmp3 += val3*b7[index2];
-      u_tmp4 += val4*b7[index2];
-      u_tmp5 += val5*b7[index2];
-      u_tmp6 += val6*b7[index2];
-      u_tmp7 += val7*b7[index2];
-      u_tmp8 += val8*b7[index2];
+      u_tmp  += val*b8[index2];
+      u_tmp2 += val2*b8[index2];
+      u_tmp3 += val3*b8[index2];
+      u_tmp4 += val4*b8[index2];
+      u_tmp5 += val5*b8[index2];
+      u_tmp6 += val6*b8[index2];
+      u_tmp7 += val7*b8[index2];
+      u_tmp8 += val8*b8[index2];
 
 
       index2 += 1;
@@ -819,14 +819,14 @@ void matMulVecPacked8(Elem *out, const Elem *a, const Elem *b, const Elem *b2, c
       t_tmp6 += val6*b7[index2];
       t_tmp7 += val7*b7[index2];
       t_tmp8 += val8*b7[index2];
-      u_tmp  += val*b7[index2];
-      u_tmp2 += val2*b7[index2];
-      u_tmp3 += val3*b7[index2];
-      u_tmp4 += val4*b7[index2];
-      u_tmp5 += val5*b7[index2];
-      u_tmp6 += val6*b7[index2];
-      u_tmp7 += val7*b7[index2];
-      u_tmp8 += val8*b7[index2];
+      u_tmp  += val*b8[index2];
+      u_tmp2 += val2*b8[index2];
+      u_tmp3 += val3*b8[index2];
+      u_tmp4 += val4*b8[index2];
+      u_tmp5 += val5*b8[index2];
+      u_tmp6 += val6*b8[index2];
+      u_tmp7 += val7*b8[index2];
+      u_tmp8 += val8*b8[index2];
 
       index2 += 1;
 
@@ -894,14 +894,14 @@ void matMulVecPacked8(Elem *out, const Elem *a, const Elem *b, const Elem *b2, c
       t_tmp6 += val6*b7[index2];
       t_tmp7 += val7*b7[index2];
       t_tmp8 += val8*b7[index2];
-      u_tmp  += val*b7[index2];
-      u_tmp2 += val2*b7[index2];
-      u_tmp3 += val3*b7[index2];
-      u_tmp4 += val4*b7[index2];
-      u_tmp5 += val5*b7[index2];
-      u_tmp6 += val6*b7[index2];
-      u_tmp7 += val7*b7[index2];
-      u_tmp8 += val8*b7[index2];
+      u_tmp  += val*b8[index2];
+      u_tmp2 += val2*b8[index2];
+      u_tmp3 += val3*b8[index2];
+      u_tmp4 += val4*b8[index2];
+      u_tmp5 += val5*b8[index2];
+      u_tmp6 += val6*b8[index2];
+      u_tmp7 += val7*b8[index2];
+      u_tmp8 += val8*b8[index2];
 
       index2 += 1;
       

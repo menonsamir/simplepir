@@ -396,6 +396,7 @@ type Measurement struct {
 		DownloadBytes float64 `json:"downloadBytes"`
 		ServerTimeMs  float64 `json:"serverTimeMs"`
 		ClientTimeMs  float64 `json:"clientTimeMs"`
+		StdDevServerTimeMs  float64 `json:"stdDevServerTimeMs"`
 	} `json:"online"`
 }
 
@@ -432,9 +433,16 @@ func BenchmarkSimplePirSingle(b *testing.B) {
 	}
 
 	DB := MakeRandomDB(N, d, &p)
-	var tputs []float64
-	_, _, offline_comm, online_comm, time_ms, online_upload := RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
-
+	var times []float64
+	var offline_comm float64
+	var online_comm float64
+	var online_upload float64
+	
+	for j := 0; j < 5; j++ {
+		var time_ms float64
+		_, _, offline_comm, online_comm, time_ms, online_upload = RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
+		times = append(times, time_ms)
+	}
 	// Write report.json
 	m := Measurement{}
 	m.Offline.UploadBytes = 0
@@ -443,7 +451,8 @@ func BenchmarkSimplePirSingle(b *testing.B) {
 	m.Offline.ClientTimeMs = 0
 	m.Online.UploadBytes = online_upload * 1024
 	m.Online.DownloadBytes = online_comm * 1024
-	m.Online.ServerTimeMs = time_ms
+	m.Online.ServerTimeMs = avg(times)
+	m.Online.StdDevServerTimeMs = stddev(times)
 
 	// Write m to report.json
 	enc := json.NewEncoder(fhJson)
@@ -451,8 +460,8 @@ func BenchmarkSimplePirSingle(b *testing.B) {
 	fhJson.Sync()
 	fhJson.Close()
 
-	fmt.Printf("Avg SimplePIR tput, except for first run: %f MB/s\n", avg(tputs))
-	fmt.Printf("Std dev of SimplePIR tput, except for first run: %f MB/s\n", stddev(tputs))
+	fmt.Printf("Avg SimplePIR time: %f ms\n", avg(times))
+	fmt.Printf("Std dev of SimplePIR time: %f ms\n", stddev(times))
 }
 
 // Benchmark DoublePIR performance.
@@ -488,8 +497,16 @@ func BenchmarkDoublePirSingle(b *testing.B) {
 	}
 
 	DB := MakeRandomDB(N, d, &p)
-	var tputs []float64
-	_, _, offline_comm, online_comm, time_ms, online_upload := RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
+	var times []float64
+	var offline_comm float64
+	var online_comm float64
+	var online_upload float64
+	
+	for j := 0; j < 5; j++ {
+		var time_ms float64
+		_, _, offline_comm, online_comm, time_ms, online_upload = RunFakePIR(&pir, DB, p, []uint64{i}, f, false)
+		times = append(times, time_ms)
+	}
 
 	// Write report.json
 	m := Measurement{}
@@ -499,16 +516,16 @@ func BenchmarkDoublePirSingle(b *testing.B) {
 	m.Offline.ClientTimeMs = 0
 	m.Online.UploadBytes = online_upload * 1024
 	m.Online.DownloadBytes = online_comm * 1024
-	m.Online.ServerTimeMs = time_ms
+	m.Online.ServerTimeMs = avg(times)
 
 	// Write m to report.json
 	enc := json.NewEncoder(fhJson)
 	enc.Encode(m)
 	fhJson.Sync()
 	fhJson.Close()
-	
-	fmt.Printf("Avg DoublePIR tput, except for first run: %f MB/s\n", avg(tputs))
-	fmt.Printf("Std dev of DoublePIR tput, except for first run: %f MB/s\n", stddev(tputs))
+
+	fmt.Printf("Avg DoublePIR time: %f ms\n", avg(times))
+	fmt.Printf("Std dev of DoublePIR time: %f ms\n", stddev(times))
 }
 
 // Benchmark SimplePIR performance, on 1GB databases with increasing row length.
